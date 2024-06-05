@@ -42,5 +42,6 @@
     "window.menuBarVisibility": "classic",
     "workbench.iconTheme": "material-icon-theme",
     "workbench.startupEditor": "none",
-    "workbench.tips.enabled": false
+    "workbench.tips.enabled": false,
+    "livePreview.defaultPreviewPath": "/index.html"
 }

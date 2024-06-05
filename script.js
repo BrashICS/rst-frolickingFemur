@@ -9,9 +9,6 @@
 
 'use strict';
 
-//loses its ever loving MIND when the library is put in so idk where or with what syntax
-const lib = require("./library.js");
-
 // Globals, event listeners, and general tomfoolery
 // Feel free to change values but beware the consequences
 const CVS_WIDTH = 404;
@@ -21,7 +18,8 @@ const COLS = 8;
 let cvs;
 let grid = [];
 
-// The (overly simple) model
+//document.getElementById("rest").addEventListener("click", test)
+
 class Square {
   colour = [0, 0, 0];
   value = 0;
@@ -36,11 +34,11 @@ class Square {
 function setup() {
   cvs = createCanvas(CVS_WIDTH, CVS_HEIGHT);
 
-  // Initialize the grid to all white squares
+  // Initialize the grid to all black squares
   for (let y = 0; y < ROWS; y++) {
     grid[y] = [];
-    for (let x = 0; x < COLS; x++){
-      grid[y].push(new Square([255, 255, 255], 0));
+    for (let x = 0; x < COLS; x++) {
+      grid[y].push(new Square([0, 0, 0], 0));
     }
   }
 
@@ -79,40 +77,101 @@ function draw_grid(x, y) {
       // Write the value of the square in the center of it
       if (grid[row][col].value > 0) {
         textAlign(CENTER, CENTER);
-        fill("black")
+        fill("white")
         text(grid[row][col].value, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
     }
   }
 }
 
+function mouseClicked(){
+  let x = Math.floor((mouseX/100)/0.5)
+  let y = Math.floor((mouseY/100)/0.5)
+
+  if (mouseButton == LEFT){
+    grid[y][x].colour= (0,0,0)}
+
+    for(let y = 0; y<ROWS;y++){
+      for(let x = 0; x < COLS; x++){
+        console.log(grid[y][x].colour)
+      }
+    }
+}
+/*
 let clicky = 1;
-let checkin = []
+let checkinx = []
+let chenkiny = []
 
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5)
   let y = Math.floor((mouseY/100)/0.5)
 
   // First click, generating grid with mines and math
-  if (mouseButton == LEFT&& clicky == 1){
+  if (mouseButton == LEFT && clicky == 1){
     grid[y][x].colour = (0,0,0)
 
+    console.log('yeehaw')
     // Insert algorithm to generate mines
     for (let m = 0; m< 10; m++){
+
+      // Make sure mines are in different spots
       for (let i = 0; i < checkin.length; i++){
-        if (yx == checkin[i]){
+        if (y == checkiny[i] && x == checkinx[i]){
           yx = [lib.randInt(0,COLS), lib.randInt(0,ROWS)]
+          i = -1
         }
       }
-      checkin.push(yx)
-      grid[yx].value = -1
+
+      // Throws mines in grid
+      checkiny.push(y)
+      checkinx.push(x)
+      grid[y][x].value = -1
+      console.log(grid)
     }
+    console.log(grid)
   }
 
- else if (mouseButton == RIGHT){
+  // Flagging mine
+  if (mouseButton == RIGHT){
   grid[y][x].value = 0
   console.log('hi')
  }
 
  clicky++
 }
+
+
+let clicky = 1;
+let checkinx = []
+let chenkiny = []
+
+function mouseClicked(){
+  let x = Math.floor((mouseX/100)/0.5)
+  let y = Math.floor((mouseY/100)/0.5)
+
+  // First click, generating grid with mines and math
+  if (mouseButton == LEFT && clicky == 1){
+    console.log(grid[y][x].colour)
+    grid[y][x].colour = (255,255,255)
+    grid.colour=(0,0,0)
+
+    console.log(grid[y][x].colour)
+
+
+    console.log('yeehaw')
+
+    }
+  console.log(grid)
+
+
+  // Flagging mine
+  if (mouseButton == RIGHT){
+    grid[y][x].value = -2
+    console.log('hi')
+  }
+
+ clicky++
+}
+*/
+
+//problem is the grey rectangle its regenerating from where i click onwards
