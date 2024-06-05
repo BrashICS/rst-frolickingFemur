@@ -85,7 +85,7 @@ function draw_grid(x, y) {
     }
   }
 }
-/*
+
 let clicky = 1;
 let checkin = []
 
@@ -93,6 +93,7 @@ function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5)
   let y = Math.floor((mouseY/100)/0.5)
 
+  // First click, generating grid with mines and math
   if (mouseButton == LEFT&& clicky == 1){
     grid[y][x].colour = (0,0,0)
 
@@ -115,4 +116,3 @@ function mouseClicked(){
 
  clicky++
 }
-*/
