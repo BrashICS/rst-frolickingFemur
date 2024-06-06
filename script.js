@@ -64,8 +64,8 @@ function draw_grid(x, y) {
   let height = Math.floor(CVS_HEIGHT/y);
 
   // Center the grid on the canvas if there's a rounding error
-  let x_buffer = (CVS_WIDTH - width*x)/2
-  let y_buffer = (CVS_HEIGHT - height*y)/2
+  let x_buffer = (CVS_WIDTH - width*x)/2;
+  let y_buffer = (CVS_HEIGHT - height*y)/2;
 
   stroke("black");
   for (let row = 0; row < y; row++) {
@@ -77,101 +77,70 @@ function draw_grid(x, y) {
       // Write the value of the square in the center of it
       if (grid[row][col].value > 0) {
         textAlign(CENTER, CENTER);
-        fill("white")
+        fill("white");
         text(grid[row][col].value, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
     }
   }
 }
 
-function mouseClicked(){
-  let x = Math.floor((mouseX/100)/0.5)
-  let y = Math.floor((mouseY/100)/0.5)
-
-  if (mouseButton == LEFT){
-    grid[y][x].colour= (0,0,0)}
-
-    for(let y = 0; y<ROWS;y++){
-      for(let x = 0; x < COLS; x++){
-        console.log(grid[y][x].colour)
-      }
-    }
-}
-/*
 let clicky = 1;
-let checkinx = []
-let chenkiny = []
+let yx;
+let checkin = [];
 
 function mouseClicked(){
-  let x = Math.floor((mouseX/100)/0.5)
-  let y = Math.floor((mouseY/100)/0.5)
+  let x = Math.floor((mouseX/100)/0.5);
+  let y = Math.floor((mouseY/100)/0.5);
 
   // First click, generating grid with mines and math
   if (mouseButton == LEFT && clicky == 1){
-    grid[y][x].colour = (0,0,0)
+    grid[y][x].colour = [255,255,255];
 
-    console.log('yeehaw')
-    // Insert algorithm to generate mines
-    for (let m = 0; m< 10; m++){
+    // Generate 10 mines
+    for (let m = 0; m<10; m++){
 
-      // Make sure mines are in different spots
-      for (let i = 0; i < checkin.length; i++){
-        if (y == checkiny[i] && x == checkinx[i]){
-          yx = [lib.randInt(0,COLS), lib.randInt(0,ROWS)]
-          i = -1
+      // Generate mines and make sure they're in different spots
+      yx = [randInt(0,COLS), randInt(0,ROWS)];
+      console.log('mine')
+
+      for (let i = 0; i < checkin; i++){
+
+        console.log("lemme get a yeeyee")
+        //Why is it not surviving apst this
+        // If not first spot and doesn't already have a mine
+        if (yx[0] != y && yx[1] != x && yx[0] != checkin[i][0] && yx[1] != checkin[i][0]){
+          // Throws mines in grid
+          checkin.push[yx];
+          grid[y][x].value = -1;
+          console.log(grid[y][x].value)
         }
-      }
 
-      // Throws mines in grid
-      checkiny.push(y)
-      checkinx.push(x)
-      grid[y][x].value = -1
-      console.log(grid)
+
+        // If they match start a new mine
+        else m--;
+
+
+        console.log('here')
+      }
     }
-    console.log(grid)
+
+    //Done generating mines, add numbers on rest of grid
+
+    // Need algorithm to open up
+
+    console.log('made thru');
+    console.log(grid.value);
   }
 
   // Flagging mine
   if (mouseButton == RIGHT){
-  grid[y][x].value = 0
-  console.log('hi')
+  grid[y][x].value = -1;
+  console.log('hi');
  }
 
  clicky++
 }
 
 
-let clicky = 1;
-let checkinx = []
-let chenkiny = []
-
-function mouseClicked(){
-  let x = Math.floor((mouseX/100)/0.5)
-  let y = Math.floor((mouseY/100)/0.5)
-
-  // First click, generating grid with mines and math
-  if (mouseButton == LEFT && clicky == 1){
-    console.log(grid[y][x].colour)
-    grid[y][x].colour = (255,255,255)
-    grid.colour=(0,0,0)
-
-    console.log(grid[y][x].colour)
-
-
-    console.log('yeehaw')
-
-    }
-  console.log(grid)
-
-
-  // Flagging mine
-  if (mouseButton == RIGHT){
-    grid[y][x].value = -2
-    console.log('hi')
-  }
-
- clicky++
-}
-*/
-
-//problem is the grey rectangle its regenerating from where i click onwards
+//trobule at line 108 ish its not making it far enough
+// also idk how to display the values of each square on grid w console.log
