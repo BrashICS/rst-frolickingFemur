@@ -1,0 +1,55 @@
+things that i might need later probably not currently dont work
+
+/*
+    // Generate 10 mines
+    for (let m = 0; m<10; m++){
+
+
+      // Generate mines and make sure they're in different spots
+      yx = [randInt(0,COLS), randInt(0,ROWS)];
+      console.log('mine')
+
+      // First vs later mines
+      if (m >0){
+        // If not first spot and doesn't already have a mine
+        if (yx[0] != y && yx[1] != x && yx[0] != checkin[i][0] && yx[1] != checkin[i][0]){
+          // Throws mines in grid
+          checkin.push[yx];
+          grid[y][x].value = -1;
+          console.log(grid[y][x].value)
+        }
+      }
+      for (let i = 0; i < checkin.length; i++){
+
+
+        console.log("fdas")
+        //Why is it not surviving apst this
+
+
+
+        // If they match start a new mine
+        else m--;
+
+
+        console.log('here')
+      }
+    }
+
+    /*
+    //Done generating mines, add numbers on rest of grid
+
+    // Need algorithm to open up
+
+    console.log('made thru');
+    console.log(grid.value);
+  }
+
+  // Flagging mine
+  if (mouseButton == RIGHT){
+  grid[y][x].value = -1;
+  console.log('hi')
+ }
+
+ clicky++
+}
+*/

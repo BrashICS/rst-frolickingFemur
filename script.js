@@ -96,51 +96,42 @@ function mouseClicked(){
   if (mouseButton == LEFT && clicky == 1){
     grid[y][x].colour = [255,255,255];
 
-    // Generate 10 mines
-    for (let m = 0; m<10; m++){
-
-      // Generate mines and make sure they're in different spots
-      yx = [randInt(0,COLS), randInt(0,ROWS)];
-      console.log('mine')
-
-      for (let i = 0; i < checkin; i++){
-
-        console.log("lemme get a yeeyee")
-        //Why is it not surviving apst this
-        // If not first spot and doesn't already have a mine
-        if (yx[0] != y && yx[1] != x && yx[0] != checkin[i][0] && yx[1] != checkin[i][0]){
-          // Throws mines in grid
-          checkin.push[yx];
-          grid[y][x].value = -1;
-          console.log(grid[y][x].value)
+    for (let m = 0; m < 10; m++){
+      //Checking multiple mines
+      if (m > 0){
+        for (let i = 0; i < checkin.length; i++){
+          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][0]){
+            i = 0;
+            yx = [randInt(0,COLS), randInt(0,ROWS)];
+          }
         }
-
-
-        // If they match start a new mine
-        else m--;
-
-
-        console.log('here')
       }
+
+      // Generate first mine
+      if (m==0) newMine(y,x);
+
+      // Throws mines in grid
+      checkin.push[yx];
+      grid[y][x].value = -1;
+      console.log(grid[y][x].value)
     }
 
-    //Done generating mines, add numbers on rest of grid
-
-    // Need algorithm to open up
-
-    console.log('made thru');
-    console.log(grid.value);
   }
 
-  // Flagging mine
-  if (mouseButton == RIGHT){
-  grid[y][x].value = -1;
-  console.log('hi');
- }
-
- clicky++
 }
 
-
-//trobule at line 108 ish its not making it far enough
 // also idk how to display the values of each square on grid w console.log
+
+
+
+// Helper function for first mine generated
+function newMine(y,x){
+  yx = [randInt(0,COLS), randInt(0,ROWS)];
+
+  // Base case
+  if (yx[0] != y && yx[1] != x){
+    return yx;
+  }
+
+  newMines(y,x)
+}
