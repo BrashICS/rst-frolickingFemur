@@ -41,7 +41,6 @@ function setup() {
       grid[y].push(new Square([0, 0, 0], 0));
     }
   }
-
 }
 
 // Draw a new frame of the scene
@@ -71,7 +70,7 @@ function draw_grid(x, y) {
   for (let row = 0; row < y; row++) {
     for (let col = 0; col < x; col++) {
       // Fill the square with the r,g,b values from the model
-      fill(...grid[row][col].colour);
+      fill("black");
       rect(col*width + x_buffer, row*height + y_buffer, width, height);
 
       // Write the value of the square in the center of it
@@ -96,24 +95,42 @@ function mouseClicked(){
   if (mouseButton == LEFT && clicky == 1){
     grid[y][x].colour = [255,255,255];
 
-    for (let m = 0; m < 10; m++){
+    for (let m = 0; m <= 10; m++){
       //Checking multiple mines
       if (m > 0){
+        yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
         for (let i = 0; i < checkin.length; i++){
-          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][0]){
+          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][0] || yx[0] == y && yx[1] == x){
             i = 0;
-            yx = [randInt(0,COLS), randInt(0,ROWS)];
+            yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
           }
         }
+
+        console.log("m = " + m);
+        console.log("yx = " + yx);
+        checkin.push(yx);
+        grid[yx[0]][yx[1]] = -1;
+
+        console.log(grid[yx[0]][yx[1]]);
+
+        console.log("checkin = " + checkin);
+        console.log('');
       }
 
-      // Generate first mine
-      if (m==0) newMine(y,x);
+      console.log("m = " + m)
+      console.log("length = " + checkin.length)
 
-      // Throws mines in grid
-      checkin.push[yx];
-      grid[y][x].value = -1;
-      console.log(grid[y][x].value)
+      // Place first mine
+      if (m==0){
+        newMine(y,x);
+        checkin[0] = yx;
+        grid[yx[0]][yx[1]] = -1
+        m++
+
+        console.log(yx)
+        console.log("first " + checkin)
+        console.log('')
+      }
     }
 
   }
@@ -126,12 +143,16 @@ function mouseClicked(){
 
 // Helper function for first mine generated
 function newMine(y,x){
-  yx = [randInt(0,COLS), randInt(0,ROWS)];
+  yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
 
   // Base case
   if (yx[0] != y && yx[1] != x){
     return yx;
   }
 
-  newMines(y,x)
+  newMine(y,x)
 }
+
+
+//still having troubles checking that all the mines are different
+//check also to show on grid where mines are for troubleshooting ???
