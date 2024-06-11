@@ -66,19 +66,20 @@ function draw_grid(x, y) {
   let x_buffer = (CVS_WIDTH - width*x)/2;
   let y_buffer = (CVS_HEIGHT - height*y)/2;
 
-  stroke("black");
+  stroke("white");
   for (let row = 0; row < y; row++) {
     for (let col = 0; col < x; col++) {
       // Fill the square with the r,g,b values from the model
-      fill("black");
+      fill(...grid[row][col].colour);
       rect(col*width + x_buffer, row*height + y_buffer, width, height);
-
+/*
       // Write the value of the square in the center of it
       if (grid[row][col].value > 0) {
         textAlign(CENTER, CENTER);
         fill("white");
         text(grid[row][col].value, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
+      */
     }
   }
 }
@@ -96,45 +97,34 @@ function mouseClicked(){
     grid[y][x].colour = [255,255,255];
 
     for (let m = 0; m <= 10; m++){
+      // Place first mine
+      if (m==0){
+        newMine(y,x);
+        checkin[0] = yx;
+        grid[yx[0]][yx[1]] = -1;
+        m++;
+      }
+
       //Checking multiple mines
       if (m > 0){
         yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
         for (let i = 0; i < checkin.length; i++){
-          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][0] || yx[0] == y && yx[1] == x){
+          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][1] || yx[0] == y && yx[1] == x){
             i = 0;
             yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
           }
         }
 
-        console.log("m = " + m);
-        console.log("yx = " + yx);
         checkin.push(yx);
         grid[yx[0]][yx[1]] = -1;
-
-        console.log(grid[yx[0]][yx[1]]);
-
-        console.log("checkin = " + checkin);
-        console.log('');
-      }
-
-      console.log("m = " + m)
-      console.log("length = " + checkin.length)
-
-      // Place first mine
-      if (m==0){
-        newMine(y,x);
-        checkin[0] = yx;
-        grid[yx[0]][yx[1]] = -1
-        m++
-
-        console.log(yx)
-        console.log("first " + checkin)
-        console.log('')
       }
     }
+    grid.colour = [0,0,0]
+    grid[y][x].colour = [255,255,255]
 
+
+    clicky++
   }
-
 }
 
 // also idk how to display the values of each square on grid w console.log
@@ -153,6 +143,4 @@ function newMine(y,x){
   newMine(y,x)
 }
 
-
-//still having troubles checking that all the mines are different
-//check also to show on grid where mines are for troubleshooting ???
+//strugling wit the canvas domgioasjop fjeiopf jasdpf jsa;dl
