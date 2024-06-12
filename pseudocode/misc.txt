@@ -56,3 +56,10 @@ things that i might need later probably not currently dont work
 
 line 73 ish
       fill("...grid[row][col].colour");
+
+
+ &&
+              (runy - 1) + checky >= 0 &&  (runx - 1) + checkx >= 0 && (runy - 1) + checky < 8 &&  (runx - 1) + checkx < 8 &&
+              (runy - 1) + checky != checky && (runx - 1) + checkx != checkx){
+
+              grid[runy][runx].near += 1

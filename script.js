@@ -137,21 +137,26 @@ function mouseClicked(){
         grid[yx[0]][yx[1]].mine = "m";
       }
     }
-
     // Math
     for (let runy = 0; runy < ROWS; runy++) {
       for (let runx = 0; runx < COLS; runx++) {
 
-        console.log('hehe')
-
         for (let checky = -1; checky <= 1; runy++){
-          for (let checkx = 0; checkx <= 1; runx++){
+          for (let checkx = -1; checkx <= 1; runx++){
 
             // Nearby mine, if they're touching a mine, on the grid, and not the same as the center check
-            if (grid[runy + checky][runx + checkx].mine == "m" && runy + checky >= 0 &&  runx + checkx >= 0 && runy + checky < 8 &&  runx + checkx < 8 && runy + checky != checky && runx + checkx != checkx){
+            console.log(runy, runx, checky, checkx)
+            console.log(checky+2)
+            console.log('')
 
-              grid[runy][runx].near += 1
+            // If on grid and if it's not main check box
+            if (runy + checky >= 0 &&  runx + checkx >= 0 && runy + checky < 8 &&  runx + checkx < 8 && runy + checky != runy &&  runx + checkx != runx){
+              // If there's a mine nearby
+              if (grid[runy + checky][runx + checkx].mine == "m"){
+                console.log("hi")
+              }
             }
+            //we got some kind of infinite loop crashing here 
 
             // Going off grid
           }
@@ -159,6 +164,8 @@ function mouseClicked(){
 
       }
     }
+    clicky++
+
   }
 }
 
@@ -177,5 +184,3 @@ function newMine(y,x){
 
   newMine(y,x)
 }
-
-//strugling wit the canvas domgioasjop fjeiopf jasdpf jsa;dl
