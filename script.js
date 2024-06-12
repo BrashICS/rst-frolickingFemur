@@ -22,11 +22,17 @@ let grid = [];
 
 class Square {
   colour = [0, 0, 0];
-  value = 0;
+  near = 0;
+  mine = "o";
+  open = 0;
+  flag = 0;
 
-  constructor(colour, value) {
+  constructor(colour, near, mine, open, flag) {
     this.colour = colour;
-    this.value = value;
+    this.near = near;
+    this.mine = mine;
+    this.open = open;
+    this.flag = flag;
   }
 }
 
@@ -54,8 +60,8 @@ function draw() {
 
 /* Draw a grid that is x by y
  * Utilize the `grid` 2D array of Squares
- * Fill each square with the proper .colour and if the value
- * of the square is over 0, write the value on the square.
+ * Fill each square with the proper .colour and if the near
+ * of the square is over 0, write the nears on the square.
  */
 function draw_grid(x, y) {
   // Get the size of each square
@@ -63,8 +69,8 @@ function draw_grid(x, y) {
   let height = Math.floor(CVS_HEIGHT/y);
 
   // Center the grid on the canvas if there's a rounding error
-  let x_buffer = (CVS_WIDTH - width*x)/2;
-  let y_buffer = (CVS_HEIGHT - height*y)/2;
+  let x_buffer = (CVS_WIDTH - width*x)/2
+  let y_buffer = (CVS_HEIGHT - height*y)/2
 
   stroke("white");
   for (let row = 0; row < y; row++) {
@@ -72,14 +78,22 @@ function draw_grid(x, y) {
       // Fill the square with the r,g,b values from the model
       fill(...grid[row][col].colour);
       rect(col*width + x_buffer, row*height + y_buffer, width, height);
-/*
-      // Write the value of the square in the center of it
-      if (grid[row][col].value > 0) {
+
+      // Troubleshooting, get rid of later
+      // Write the mines of the square in the center of it
+      if (grid[row][col].mine == "m") {
         textAlign(CENTER, CENTER);
         fill("white");
-        text(grid[row][col].value, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
+        text(grid[row][col].mine, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
-      */
+
+      // Write the mines of the square in the center of it
+      if (grid[row][col].near > 0) {
+        textAlign(CENTER, CENTER);
+        fill("white");
+        text(grid[row][col].near, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
+      }
+
     }
   }
 }
@@ -88,20 +102,24 @@ let clicky = 1;
 let yx;
 let checkin = [];
 
+
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
   let y = Math.floor((mouseY/100)/0.5);
 
+  // Highlight first click
+  grid[y][x].colour = [255,255,255]
+
   // First click, generating grid with mines and math
   if (mouseButton == LEFT && clicky == 1){
-    grid[y][x].colour = [255,255,255];
 
+    // Mines
     for (let m = 0; m <= 10; m++){
       // Place first mine
       if (m==0){
         newMine(y,x);
         checkin[0] = yx;
-        grid[yx[0]][yx[1]] = -1;
+        grid[yx[0]][yx[1]].mine = "m";
         m++;
       }
 
@@ -116,19 +134,36 @@ function mouseClicked(){
         }
 
         checkin.push(yx);
-        grid[yx[0]][yx[1]] = -1;
+        grid[yx[0]][yx[1]].mine = "m";
       }
     }
-    grid.colour = [0,0,0]
-    grid[y][x].colour = [255,255,255]
 
+    // Math
+    for (let runy = 0; runy < ROWS; runy++) {
+      for (let runx = 0; runx < COLS; runx++) {
 
-    clicky++
+        console.log('hehe')
+
+        for (let checky = -1; checky <= 1; runy++){
+          for (let checkx = 0; checkx <= 1; runx++){
+
+            // Nearby mine, if they're touching a mine, on the grid, and not the same as the center check
+            if (grid[runy + checky][runx + checkx].mine == "m" && runy + checky >= 0 &&  runx + checkx >= 0 && runy + checky < 8 &&  runx + checkx < 8 && runy + checky != checky && runx + checkx != checkx){
+
+              grid[runy][runx].near += 1
+            }
+
+            // Going off grid
+          }
+        }
+
+      }
+    }
   }
 }
 
-// also idk how to display the values of each square on grid w console.log
-
+// also idk how to display the nears of each square on grid w console.log
+// checking if statements at 151
 
 
 // Helper function for first mine generated
