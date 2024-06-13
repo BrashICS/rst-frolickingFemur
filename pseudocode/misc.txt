@@ -1,4 +1,5 @@
 things that i might need later probably not currently dont work
+mostly just a recycle bin for pieces of code i didnt necessarily wanna throw out in fear id need them later
 
 /*
     // Generate 10 mines
@@ -63,3 +64,5 @@ line 73 ish
               (runy - 1) + checky != checky && (runx - 1) + checkx != checkx){
 
               grid[runy][runx].near += 1
+
+runy + checky != runy &&  runx + checkx != runx

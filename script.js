@@ -1,7 +1,7 @@
 /**
  * ICS4U - Final Project
  *
- * Description:
+ * Description: Basic game over Minesweeper on an 8 x 8 grid
  *
  * Author: Kate Boyd
  */
@@ -90,7 +90,10 @@ function draw_grid(x, y) {
       // Write the mines of the square in the center of it
       if (grid[row][col].near > 0) {
         textAlign(CENTER, CENTER);
-        fill("white");
+        if(grid[row][col].near == 1) fill ("red")
+        if(grid[row][col].near == 2) fill ("blue")
+        if(grid[row][col].near == 3) fill ("green")
+        if (grid[row][col].near > 3)fill ("purple")
         text(grid[row][col].near, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
 
@@ -101,7 +104,7 @@ function draw_grid(x, y) {
 let clicky = 1;
 let yx;
 let checkin = [];
-
+let clearCheck =0;
 
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
@@ -125,9 +128,10 @@ function mouseClicked(){
 
       //Checking multiple mines
       if (m > 0){
+        clearCheck = 0;
         yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
         for (let i = 0; i < checkin.length; i++){
-          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][1] || yx[0] == y && yx[1] == x){
+          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][1] || yx[0] == y && yx[1] == x && clearCheck == 0){
             i = 0;
             yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
           }
@@ -137,35 +141,27 @@ function mouseClicked(){
         grid[yx[0]][yx[1]].mine = "m";
       }
     }
+
     // Math
     for (let runy = 0; runy < ROWS; runy++) {
       for (let runx = 0; runx < COLS; runx++) {
 
-        for (let checky = -1; checky <= 1; runy++){
-          for (let checkx = -1; checkx <= 1; runx++){
+        for (let checky = -1; checky <= 1; checky++){
+          for (let checkx = -1; checkx <= 1; checkx++){
+            // If on grid and if it's not main check box and initial spot is not a mine
+            if (runy + checky >= 0 &&  runx + checkx >= 0 && runy + checky < 8 &&  runx + checkx < 8 && grid[runy][runx].mine != "m"){
 
-            // Nearby mine, if they're touching a mine, on the grid, and not the same as the center check
-            console.log(runy, runx, checky, checkx)
-            console.log(checky+2)
-            console.log('')
-
-            // If on grid and if it's not main check box
-            if (runy + checky >= 0 &&  runx + checkx >= 0 && runy + checky < 8 &&  runx + checkx < 8 && runy + checky != runy &&  runx + checkx != runx){
               // If there's a mine nearby
               if (grid[runy + checky][runx + checkx].mine == "m"){
-                console.log("hi")
+                grid[runy][runx].near +=1
               }
-            }
-            //we got some kind of infinite loop crashing here 
 
-            // Going off grid
+            }
           }
         }
-
       }
     }
     clicky++
-
   }
 }
 
@@ -176,11 +172,24 @@ function mouseClicked(){
 // Helper function for first mine generated
 function newMine(y,x){
   yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
+  clearCheck=0;
+
+  // Check circle around mine for first click
+  for(let noy = -1; noy <= 1; noy++){
+    for (let nox = -1; nox <= 1; nox++){
+      if(yx[0 + noy] == y && yx[1 + nox] == x){
+        clearCheck++
+      }
+    }
+  }
 
   // Base case
-  if (yx[0] != y && yx[1] != x){
+  if (yx[0] != y && yx[1] != x && clearCheck == 0){
     return yx;
   }
 
   newMine(y,x)
 }
+
+//need to resolve issues where the first click can be in contact with a mine
+//on the multiple mines things
