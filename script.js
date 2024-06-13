@@ -1,7 +1,7 @@
 /**
  * ICS4U - Final Project
  *
- * Description: Basic game over Minesweeper on an 8 x 8 grid
+ * Description: Basic game over Minesweeper on an 8 x 8 grid with 7 mines
  *
  * Author: Kate Boyd
  */
@@ -117,7 +117,7 @@ function mouseClicked(){
   if (mouseButton == LEFT && clicky == 1){
 
     // Mines
-    for (let m = 0; m <= 10; m++){
+    for (let m = 0; m <= 7; m++){
       // Place first mine
       if (m==0){
         newMine(y,x);
