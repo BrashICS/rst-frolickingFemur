@@ -6,7 +6,6 @@
  * Author: Kate Boyd
  */
 
-
 'use strict';
 
 // Globals, event listeners, and general tomfoolery
