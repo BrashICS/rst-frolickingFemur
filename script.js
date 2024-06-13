@@ -130,9 +130,20 @@ function mouseClicked(){
       if (m > 0){
         clearCheck = 0;
         yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
+
+        // Mines near original click
+        for (let noy = -1; noy <= 1; noy++){
+          for (let nox = -1; nox <= 1; nox++){
+            if (yx[0 + noy] == y && yx[1 + nox] == x){
+              clearCheck++
+            }
+          }
+        }
+
         for (let i = 0; i < checkin.length; i++){
+          // Restart if it's replacing
           if (yx[0] == checkin[i][0] && yx[1] == checkin[i][1] || yx[0] == y && yx[1] == x && clearCheck == 0){
-            i = 0;
+            m--;
             yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
           }
         }
