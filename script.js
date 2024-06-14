@@ -17,13 +17,12 @@ const COLS = 8;
 let cvs;
 let grid = [];
 
-//document.getElementById("rest").addEventListener("click", test)
+document.getElementById("rest").addEventListener("click", restart)
 
 class Square {
   colour = [0, 0, 0];
   near = 0;
   mine = "o";
-  open = 0;
   flag = 0;
 
   constructor(colour, near, mine, open, flag) {
@@ -43,7 +42,7 @@ function setup() {
   for (let y = 0; y < ROWS; y++) {
     grid[y] = [];
     for (let x = 0; x < COLS; x++) {
-      grid[y].push(new Square([0, 0, 0], 0));
+      grid[y].push(new Square([0, 0, 0], 0, "o", 0,));
     }
   }
 }
@@ -95,7 +94,6 @@ function draw_grid(x, y) {
         if (grid[row][col].near > 3)fill ("purple")
         text(grid[row][col].near, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
-
     }
   }
 }
@@ -134,9 +132,7 @@ function mouseClicked(){
         for (let noy = -1; noy <= 1; noy++){
           for (let nox = -1; nox <= 1; nox++){
             // Need the check when noy and nox = 0
-            if (yx[0] == y + noy && yx[1] == x + nox){
-              done = false
-            }
+            if (yx[0] == y + noy && yx[1] == x + nox) done = false
           }
         }
 
@@ -156,25 +152,22 @@ function mouseClicked(){
       }
     }
 
-    // Math
+    // Math for near values
     for (let runy = 0; runy < ROWS; runy++) {
       for (let runx = 0; runx < COLS; runx++) {
-
         for (let checky = -1; checky <= 1; checky++){
           for (let checkx = -1; checkx <= 1; checkx++){
             // If on grid and if it's not main check box and initial spot is not a mine
             if (runy + checky >= 0 &&  runx + checkx >= 0 && runy + checky < 8 &&  runx + checkx < 8 && grid[runy][runx].mine != "m"){
-
               // If there's a mine nearby
-              if (grid[runy + checky][runx + checkx].mine == "m"){
-                grid[runy][runx].near +=1
-              }
-
+              if (grid[runy + checky][runx + checkx].mine == "m") grid[runy][runx].near +=1
             }
           }
         }
       }
     }
+
+
     //Open up first chunk/find algorithm for that, put it outside, and call on every click
 
     // Allow flagging on every click
@@ -206,3 +199,22 @@ function newMine(y,x){
 
 //need to resolve issues where the first click can be in contact with a mine
 //on the multiple mines things
+
+// Restarting grid
+function restart(){
+  console.log('here, about to call setup')
+
+  /*
+  grid = []
+  colour = [0, 0, 0];
+  near = 0;
+  mine = "o";
+  open = 0;
+  flag = 0;
+  clicky = 1;
+  checkin = []
+  done = true;
+  */
+
+  setup()
+}
