@@ -103,7 +103,7 @@ function draw_grid(x, y) {
 let clicky = 1;
 let yx;
 let checkin = [];
-let clearCheck =0;
+let done = true;
 
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
@@ -116,39 +116,47 @@ function mouseClicked(){
   if (mouseButton == LEFT && clicky == 1){
 
     // Mines
-    for (let m = 0; m <= 7; m++){
+    for (let m = 0; m = 7; m++){
+      done = true;
+
       // Place first mine
       if (m==0){
         newMine(y,x);
         checkin[0] = yx;
         grid[yx[0]][yx[1]].mine = "m";
-        m++;
+        console.log('first')
+        console.log('first: ' + yx)
       }
 
       //Checking multiple mines
       if (m > 0){
-        clearCheck = 0;
         yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
 
         // Mines near original click
         for (let noy = -1; noy <= 1; noy++){
           for (let nox = -1; nox <= 1; nox++){
-            if (yx[0 + noy] == y && yx[1 + nox] == x){
-              clearCheck++
+            if (yx[0] == y + noy && yx[1] == x + nox){
+              console.log('huh')
+              done = false
             }
           }
         }
 
         for (let i = 0; i < checkin.length; i++){
-          // Restart if it's replacing
-          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][1] || yx[0] == y && yx[1] == x && clearCheck == 0){
-            m--;
+          // Restart if it's repeating or too close to first click
+          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][1] || yx[0] == y && yx[1] == x){
+            done = false;
             yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
+            console.log('restart new mine')
           }
         }
 
-        checkin.push(yx);
-        grid[yx[0]][yx[1]].mine = "m";
+        if (done){
+          console.log('last mine');
+          console.log('');
+          checkin.push(yx);
+          grid[yx[0]][yx[1]].mine = "m";
+        }
       }
     }
 
@@ -182,19 +190,18 @@ function mouseClicked(){
 // Helper function for first mine generated
 function newMine(y,x){
   yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
-  clearCheck=0;
 
   // Check circle around mine for first click
   for(let noy = -1; noy <= 1; noy++){
     for (let nox = -1; nox <= 1; nox++){
-      if(yx[0 + noy] == y && yx[1 + nox] == x){
-        clearCheck++
+      if(yx[0] == y + noy && yx[1] == x + nox){
+        done = false
       }
     }
   }
 
-  // Base case
-  if (yx[0] != y && yx[1] != x && clearCheck == 0){
+  // Base casem if it's
+  if (done){
     return yx;
   }
 
