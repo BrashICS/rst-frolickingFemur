@@ -135,7 +135,8 @@ function mouseClicked(){
         // Mines near original click
         for (let noy = -1; noy <= 1; noy++){
           for (let nox = -1; nox <= 1; nox++){
-            if (yx[0] == y + noy && yx[1] == x + nox){
+            // Need the check when noy and nox = 0
+            if (yx[0] == y + noy && yx[1] == x + nox && noy != 0 && nox != 0){
               console.log('huh')
               done = false
             }
@@ -148,6 +149,7 @@ function mouseClicked(){
             done = false;
             yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
             console.log('restart new mine')
+            // problems somewhere in here
           }
         }
 
@@ -157,6 +159,7 @@ function mouseClicked(){
           checkin.push(yx);
           grid[yx[0]][yx[1]].mine = "m";
         }
+        else m--
       }
     }
 
