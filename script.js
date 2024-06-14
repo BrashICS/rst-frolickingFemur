@@ -132,7 +132,7 @@ function mouseClicked(){
       if (m > 0){
         yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
 
-        // Mines near original click
+        // Check mines aren't near original click
         for (let noy = -1; noy <= 1; noy++){
           for (let nox = -1; nox <= 1; nox++){
             // Need the check when noy and nox = 0
@@ -213,3 +213,4 @@ function newMine(y,x){
 
 //need to resolve issues where the first click can be in contact with a mine
 //on the multiple mines things
+//some sort of infinite loop problem idk
