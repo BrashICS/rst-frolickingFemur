@@ -116,7 +116,7 @@ function mouseClicked(){
   if (mouseButton == LEFT && clicky == 1){
 
     // Mines
-    for (let m = 0; m = 7; m++){
+    for (let m = 0; m < 7; m++){
       done = true;
 
       // Place first mine
@@ -124,8 +124,6 @@ function mouseClicked(){
         newMine(y,x);
         checkin[0] = yx;
         grid[yx[0]][yx[1]].mine = "m";
-        console.log('first')
-        console.log('first: ' + yx)
       }
 
       //Checking multiple mines
@@ -136,8 +134,7 @@ function mouseClicked(){
         for (let noy = -1; noy <= 1; noy++){
           for (let nox = -1; nox <= 1; nox++){
             // Need the check when noy and nox = 0
-            if (yx[0] == y + noy && yx[1] == x + nox && noy != 0 && nox != 0){
-              console.log('huh')
+            if (yx[0] == y + noy && yx[1] == x + nox){
               done = false
             }
           }
@@ -145,17 +142,13 @@ function mouseClicked(){
 
         for (let i = 0; i < checkin.length; i++){
           // Restart if it's repeating or too close to first click
-          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][1] || yx[0] == y && yx[1] == x){
+          if (yx[0] == checkin[i][0] && yx[1] == checkin[i][1]){
             done = false;
             yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
-            console.log('restart new mine')
-            // problems somewhere in here
           }
         }
 
         if (done){
-          console.log('last mine');
-          console.log('');
           checkin.push(yx);
           grid[yx[0]][yx[1]].mine = "m";
         }
@@ -182,16 +175,16 @@ function mouseClicked(){
         }
       }
     }
+    //Open up first chunk/find algorithm for that, put it outside, and call on every click
+
+    // Allow flagging on every click
     clicky++
   }
 }
 
-// also idk how to display the nears of each square on grid w console.log
-// checking if statements at 151
-
-
 // Helper function for first mine generated
 function newMine(y,x){
+  done = true;
   yx = [randInt(0,COLS-1), randInt(0,ROWS-1)];
 
   // Check circle around mine for first click
@@ -213,4 +206,3 @@ function newMine(y,x){
 
 //need to resolve issues where the first click can be in contact with a mine
 //on the multiple mines things
-//some sort of infinite loop problem idk
