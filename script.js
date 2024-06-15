@@ -23,13 +23,12 @@ class Square {
   colour = [0, 0, 0];
   near = 0;
   mine = "o";
-  flag = 0;
+  flag = "o";
 
-  constructor(colour, near, mine, open, flag) {
+  constructor(colour, near, mine, flag) {
     this.colour = colour;
     this.near = near;
     this.mine = mine;
-    this.open = open;
     this.flag = flag;
   }
 }
@@ -77,6 +76,14 @@ function draw_grid(x, y) {
       fill(...grid[row][col].colour);
       rect(col*width + x_buffer, row*height + y_buffer, width, height);
 
+      // Flag
+      if (grid[row][col].flag == "F") {
+        textAlign(CENTER, CENTER);
+        fill("red");
+        text(grid[row][col].mine, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
+      }
+
+      //--------------------------------------------------------------------
       // Troubleshooting, get rid of later
       // Write the mines of the square in the center of it
       if (grid[row][col].mine == "m") {
@@ -94,6 +101,8 @@ function draw_grid(x, y) {
         if (grid[row][col].near > 3)fill ("purple")
         text(grid[row][col].near, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
+
+      //--------------------------------------------------------------------
     }
   }
 }
@@ -107,11 +116,13 @@ function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
   let y = Math.floor((mouseY/100)/0.5);
 
-  // Highlight first click
-  grid[y][x].colour = [255,255,255]
+
 
   // First click, generating grid with mines and math
-  if (mouseButton == LEFT && clicky == 1){
+  if (mouseButton == LEFT && clicky == 1 && flag == false){
+
+    // Highlight first click
+    grid[y][x].colour = [255,255,255]
 
     // Mines
     for (let m = 0; m < 7; m++){
@@ -170,9 +181,16 @@ function mouseClicked(){
 
     //Open up first chunk/find algorithm for that, put it outside, and call on every click
 
-    // Allow flagging on every click
-    clicky++
   }
+
+  clicky++
+
+  // Flagging
+  if (mouseButton == RIGHT && flag == "o"){
+    grid[y][x].flag = "F";
+    console.log('flag changed at pot')
+  }
+  else if (mouseButton == RIGHT && flag == "F") grid[y][x].flag = "o"
 }
 
 // Helper function for first mine generated
@@ -197,24 +215,16 @@ function newMine(y,x){
   newMine(y,x)
 }
 
-//need to resolve issues where the first click can be in contact with a mine
-//on the multiple mines things
-
 // Restarting grid
 function restart(){
-  console.log('here, about to call setup')
-
-  /*
   grid = []
-  colour = [0, 0, 0];
-  near = 0;
-  mine = "o";
-  open = 0;
-  flag = 0;
   clicky = 1;
   checkin = []
   done = true;
-  */
-
   setup()
 }
+
+
+// working on displaying the flagging ish maybe push to later
+// need kill when mine is left clicked (future clicks)
+// algorithm to open up that can be called upon for all #s of left clicks
