@@ -120,3 +120,6 @@ if (mouseButton == RIGHT && grid[y][x].flag == "o"){
 
 
     */
+
+
+    grid[open[i][0] + checky][open[i][1] + checkx]

@@ -73,7 +73,7 @@ function draw_grid(x, y) {
   let x_buffer = (CVS_WIDTH - width*x)/2
   let y_buffer = (CVS_HEIGHT - height*y)/2
 
-  stroke("white");
+  stroke("grey");
   for (let row = 0; row < y; row++) {
     for (let col = 0; col < x; col++) {
       // Fill the square with the r,g,b values from the model
@@ -208,11 +208,11 @@ function mouseClicked(){
       for (let checky = -1; checky <= 1; checky++){
         for (let checkx = -1; checkx <= 1; checkx++){
 
-          //Assuming that location is part of the grid
+          //Assuming that around open location is part of the grid
           if (open[i][0] + checky >= 0 && open[i][0] < 8 && open[i][1] + checkx >= 0 && open[i][1] + checkx < 8){
 
             // If it's mineless and not touching anything uncover
-            if (grid[open[i][0] + checky][open[i][1] + checkx].mine == "o"){
+            if (grid[open[i][0] + checky][open[i][1] + checkx].mine != "m"){
               grid[open[i][0] + checky][open[i][1] + checkx].uncovered = true;
               grid[open[i][0] + checky][open[i][1] + checkx].colour = [255,255,255];
 
@@ -220,7 +220,10 @@ function mouseClicked(){
                 open.push([open[i][0] + checky, open[i][1] + checkx]);
               }
             }
+
           }
+
+
         }
       }
     }
@@ -231,6 +234,7 @@ function mouseClicked(){
 
   // New clicks
   if (clicky > 1 && grid[y][x].flag == "o"){
+
 
     // If the click is mine, lose
     if (grid[y][x].mine == "m"){
@@ -272,6 +276,7 @@ function mouseClicked(){
   }
 
   clicky++
+  console.log(y,x)
   lose = 0;
   console.log('done click')
   console.log(" ")
