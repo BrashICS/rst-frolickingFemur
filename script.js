@@ -94,7 +94,7 @@ function draw_grid(x, y) {
       // Write the mines of the square in the center of it
       if (grid[row][col].mine == "m") {
         textAlign(CENTER, CENTER);
-        fill("white");
+        fill("yellow");
         text(grid[row][col].mine, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
 
@@ -187,8 +187,43 @@ function mouseClicked(){
       }
     }
 
-    //Open up first chunk/find algorithm for that, put it outside, and call on every click
+    // Check open spots around click
+    for (let checky = -1; checky <= 1; checky++){
+      for (let checkx = -1; checkx <= 1; checkx++){
+        //Assuming that location is part of the grid
+        if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
+          // If it's mineless and not touching anything
+          if (grid[y + checky][x + checkx].mine == "o"){
+            grid[y + checky][x + checkx].uncovered = true;
+            grid[y + checky][x + checkx].colour = [255,255,255];
 
+            if (grid[y + checky][x + checkx].near == 0){
+              open.push([y + checky, x + checkx]);
+            }
+          }
+        }
+      }
+    }
+    console.log(open)
+
+    // Click check was done, now checking how far it can expand
+    for (let i = 0; i < open.length; i++){
+      for (let checky = -1; checky <= 1; checky++){
+        for (let checkx = -1; checkx <= 1; checkx++){
+          //Assuming that location is part of the grid
+          if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
+            // If it's mineless and not touching anything
+            if (grid[y + checky][x + checkx].mine == "o"){
+              grid[y + checky][x + checkx].uncovered = true;
+
+              if (grid[y + checky][x + checkx].near == 0){
+                open.push([y + checky, x + checkx]);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   // New clicks
@@ -204,6 +239,7 @@ function mouseClicked(){
       //Stop the clock
     }
 
+    /*
     else{
       // Check open spots around click
       for (let checky = -1; checky <= 1; checky++){
@@ -243,7 +279,7 @@ function mouseClicked(){
 
 
 
-
+    */
 
 
 
@@ -275,7 +311,7 @@ function mouseClicked(){
 
 
       }
-  }
+
   }
 
   // Flagging on right click
