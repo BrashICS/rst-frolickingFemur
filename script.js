@@ -18,6 +18,7 @@ let cvs;
 let grid = [];
 
 document.getElementById("rest").addEventListener("click", restart)
+document.getElementById("win").hidden = true;
 
 class Square {
   colour = [0, 0, 0];
@@ -114,22 +115,17 @@ let clicky = 1;
 let yx;
 let checkin = [];
 let done = true;
+let lose = 0;
 
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
   let y = Math.floor((mouseY/100)/0.5);
+
   //it's not registering right clicks?????
-
   console.log(mouseButton, clicky)
-
-  // Flagging on right click
-  if (mouseButton == RIGHT){
-    console.log('jfidsjafpdaf')
-  }
 
   // First click, generating grid with mines and math
   if (mouseButton == LEFT && clicky == 1){
-
     // Highlight first click
     grid[y][x].colour = [255,255,255]
     grid[y][x].uncovered = true;
@@ -192,10 +188,55 @@ function mouseClicked(){
 
   }
 
+  // New clicks, needs opening algorithm and checking algorithm (use cycle through checkin, if click is element in that array)
+  if (clicky > 1 && grid[y][x].flag == "o"){
+    // Immediately make sure there are no mines there
+    for (let i = 0; i < checkin.length; i++){
+      // If the click is within the array of mines
+      if (checkin[i][0] == y && checkin[i][1] == x){
+        // End it
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Check if in total all the uncovered squares AREN'T mines
+    for (let runy = 0; runy < ROWS; runy++){
+      for (let runx = 0; runx < COLS; runx++){
+        // If the spot is uncovered but there's not mine to it
+        if(grid[runy][runx].uncovered == false && grid[runy][runx].mine == "o"){
+          lose++
+        }
+
+      }
+    }
+
+    //If you won, show win, stop timer
+    if (lose == 0){
+      document.getElementById("win").hidden = false;
+      // Stop the timer also
+
+    }
+  }
+
+  // Flagging on right click
+  if (mouseButton == RIGHT){
+    console.log('jfidsjafpdaf')
+  }
+
   clicky++
+  lose = 0;
   console.log('hi')
-
-
 }
 
 // Helper function for first mine generated
@@ -223,11 +264,16 @@ function restart(){
   clicky = 1;
   checkin = []
   done = true;
+  lose = 0;
   setup()
 }
+
+//SUNDAY - WORKING FUNCTIONAL GAME
+//MONDAY TIMER AND TIMER RESTARTS
 
 
 // working on displaying the flagging ish maybe push to later
 // need kill when mine is left clicked (future clicks)
 // algorithm to open up that can be called upon for all #s of left clicks
 // check how to win (when uncovered squares are all mine == o)
+//problems with rightclick never registering
