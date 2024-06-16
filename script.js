@@ -19,6 +19,8 @@ let grid = [];
 
 document.getElementById("rest").addEventListener("click", restart)
 document.getElementById("win").hidden = true;
+document.getElementById("lose").hidden = true;
+
 
 class Square {
   colour = [0, 0, 0];
@@ -116,6 +118,7 @@ let yx;
 let checkin = [];
 let done = true;
 let lose = 0;
+let open = new Array
 
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
@@ -188,45 +191,91 @@ function mouseClicked(){
 
   }
 
-  // New clicks, needs opening algorithm and checking algorithm (use cycle through checkin, if click is element in that array)
+  // New clicks
   if (clicky > 1 && grid[y][x].flag == "o"){
-    // Immediately make sure there are no mines there
-    for (let i = 0; i < checkin.length; i++){
-      // If the click is within the array of mines
-      if (checkin[i][0] == y && checkin[i][1] == x){
-        // End it
-      }
+
+    // If the click is mine, lose
+    if (grid[y][x].mine == "m"){
+      document.getElementById("lose").hidden = true;
+
+      // Can no longer alter the grid
+      clicky = undefined;
+
+      //Stop the clock
     }
 
+    else{
+      // Check open spots around click
+      for (let checky = -1; checky <= 1; checky++){
+        for (let checkx = -1; checkx <= 1; checkx++){
+          //Assuming that location is part of the grid
+          if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
+            // If it's mineless and not touching anything
+            if (grid[y + checky][x + checkx].mine == "o"){
+              grid[y + checky][x + checkx].uncovered = true;
 
-
-
-
-
-
-
-
-
-
-
-
-    // Check if in total all the uncovered squares AREN'T mines
-    for (let runy = 0; runy < ROWS; runy++){
-      for (let runx = 0; runx < COLS; runx++){
-        // If the spot is uncovered but there's not mine to it
-        if(grid[runy][runx].uncovered == false && grid[runy][runx].mine == "o"){
-          lose++
+              if (grid[y + checky][x + checkx].near == 0){
+                open.push([y + checky, x + checkx]);
+              }
+            }
+          }
         }
+      }
+
+      // Click check was done, now checking how far it can expand
+      for (let i = 0; i < open.length; i++){
+        for (let checky = -1; checky <= 1; checky++){
+          for (let checkx = -1; checkx <= 1; checkx++){
+            //Assuming that location is part of the grid
+            if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
+              // If it's mineless and not touching anything
+              if (grid[y + checky][x + checkx].mine == "o"){
+                grid[y + checky][x + checkx].uncovered = true;
+
+                if (grid[y + checky][x + checkx].near == 0){
+                  open.push([y + checky, x + checkx]);
+                }
+              }
+            }
+          }
+        }
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // Check if in total all the uncovered squares AREN'T mines
+      for (let runy = 0; runy < ROWS; runy++){
+        for (let runx = 0; runx < COLS; runx++){
+          // If the spot is uncovered but there's not mine to it
+          if(grid[runy][runx].uncovered == false && grid[runy][runx].mine == "o"){
+            lose++
+          }
+
+        }
+      }
+
+      //If you won, show win, stop timer
+      if (lose == 0){
+        document.getElementById("win").hidden = false;
+
+        // Can no longer alter the grid
+        clicky = undefined
+        // Stop the timer also
+
 
       }
-    }
-
-    //If you won, show win, stop timer
-    if (lose == 0){
-      document.getElementById("win").hidden = false;
-      // Stop the timer also
-
-    }
+  }
   }
 
   // Flagging on right click
@@ -277,3 +326,5 @@ function restart(){
 // algorithm to open up that can be called upon for all #s of left clicks
 // check how to win (when uncovered squares are all mine == o)
 //problems with rightclick never registering
+
+//remember to stop clock when lost/won
