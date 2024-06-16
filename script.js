@@ -124,8 +124,6 @@ function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
   let y = Math.floor((mouseY/100)/0.5);
 
-  //it's not registering right clicks?????
-  console.log(mouseButton, clicky)
 
   // First click, generating grid with mines and math
   if (mouseButton == LEFT && clicky == 1){
@@ -191,8 +189,8 @@ function mouseClicked(){
     for (let checky = -1; checky <= 1; checky++){
       for (let checkx = -1; checkx <= 1; checkx++){
         //Assuming that location is part of the grid
-        if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
-          // If it's mineless and not touching anything
+        if (y + checky >= 0 && y + checky < 8 && x + checkx >= 0 && x + checkx < 8){
+          // If it's mineless and not touching anything uncover
           if (grid[y + checky][x + checkx].mine == "o"){
             grid[y + checky][x + checkx].uncovered = true;
             grid[y + checky][x + checkx].colour = [255,255,255];
@@ -204,15 +202,17 @@ function mouseClicked(){
         }
       }
     }
-    console.log(open)
+    //open is working fine
+    console.log("open: " + open)
 
     // Click check was done, now checking how far it can expand
     for (let i = 0; i < open.length; i++){
       for (let checky = -1; checky <= 1; checky++){
         for (let checkx = -1; checkx <= 1; checkx++){
           //Assuming that location is part of the grid
-          if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
-            // If it's mineless and not touching anything
+          if (y + checky > 0 && y + checky < 8 && x + checkx >= 0 && x + checkx < 8){
+            console.log("checking open " + open)
+            // If it's mineless and not touching anything uncover
             if (grid[y + checky][x + checkx].mine == "o"){
               grid[y + checky][x + checkx].uncovered = true;
 
@@ -239,78 +239,27 @@ function mouseClicked(){
       //Stop the clock
     }
 
-    /*
-    else{
-      // Check open spots around click
-      for (let checky = -1; checky <= 1; checky++){
-        for (let checkx = -1; checkx <= 1; checkx++){
-          //Assuming that location is part of the grid
-          if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
-            // If it's mineless and not touching anything
-            if (grid[y + checky][x + checkx].mine == "o"){
-              grid[y + checky][x + checkx].uncovered = true;
 
-              if (grid[y + checky][x + checkx].near == 0){
-                open.push([y + checky, x + checkx]);
-              }
-            }
-          }
+    // Check if in total all the uncovered squares AREN'T mines
+    for (let runy = 0; runy < ROWS; runy++){
+      for (let runx = 0; runx < COLS; runx++){
+        // If the spot is uncovered but there's not mine to it
+        if(grid[runy][runx].uncovered == false && grid[runy][runx].mine == "o"){
+          lose++
         }
       }
+    }
 
-      // Click check was done, now checking how far it can expand
-      for (let i = 0; i < open.length; i++){
-        for (let checky = -1; checky <= 1; checky++){
-          for (let checkx = -1; checkx <= 1; checkx++){
-            //Assuming that location is part of the grid
-            if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
-              // If it's mineless and not touching anything
-              if (grid[y + checky][x + checkx].mine == "o"){
-                grid[y + checky][x + checkx].uncovered = true;
+    //If you won, show win, stop timer
+    if (lose == 0){
+      document.getElementById("win").hidden = false;
 
-                if (grid[y + checky][x + checkx].near == 0){
-                  open.push([y + checky, x + checkx]);
-                }
-              }
-            }
-          }
-        }
-      }
+      // Can no longer alter the grid
+      clicky = undefined
+      // Stop the timer also
 
 
-
-    */
-
-
-
-
-
-
-
-
-
-
-      // Check if in total all the uncovered squares AREN'T mines
-      for (let runy = 0; runy < ROWS; runy++){
-        for (let runx = 0; runx < COLS; runx++){
-          // If the spot is uncovered but there's not mine to it
-          if(grid[runy][runx].uncovered == false && grid[runy][runx].mine == "o"){
-            lose++
-          }
-
-        }
-      }
-
-      //If you won, show win, stop timer
-      if (lose == 0){
-        document.getElementById("win").hidden = false;
-
-        // Can no longer alter the grid
-        clicky = undefined
-        // Stop the timer also
-
-
-      }
+    }
 
   }
 

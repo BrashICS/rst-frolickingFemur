@@ -76,3 +76,47 @@ if (mouseButton == RIGHT && grid[y][x].flag == "o"){
     grid[y][x].flag = "o";
     console.log('flag fjdksf at spot')
   }
+
+
+
+/*
+    else{
+      // Check open spots around click
+      for (let checky = -1; checky <= 1; checky++){
+        for (let checkx = -1; checkx <= 1; checkx++){
+          //Assuming that location is part of the grid
+          if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
+            // If it's mineless and not touching anything
+            if (grid[y + checky][x + checkx].mine == "o"){
+              grid[y + checky][x + checkx].uncovered = true;
+
+              if (grid[y + checky][x + checkx].near == 0){
+                open.push([y + checky, x + checkx]);
+              }
+            }
+          }
+        }
+      }
+
+      // Click check was done, now checking how far it can expand
+      for (let i = 0; i < open.length; i++){
+        for (let checky = -1; checky <= 1; checky++){
+          for (let checkx = -1; checkx <= 1; checkx++){
+            //Assuming that location is part of the grid
+            if (y + checky > 0 && y + checky < 8 && x + checkx < 8 && x + checkx < 8){
+              // If it's mineless and not touching anything
+              if (grid[y + checky][x + checkx].mine == "o"){
+                grid[y + checky][x + checkx].uncovered = true;
+
+                if (grid[y + checky][x + checkx].near == 0){
+                  open.push([y + checky, x + checkx]);
+                }
+              }
+            }
+          }
+        }
+      }
+
+
+
+    */
