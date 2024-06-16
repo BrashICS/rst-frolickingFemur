@@ -118,7 +118,7 @@ let yx;
 let checkin = [];
 let done = true;
 let lose = 0;
-let open = new Array
+let open = new Array()
 
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
@@ -202,28 +202,31 @@ function mouseClicked(){
         }
       }
     }
-    //open is working fine
-    console.log("open: " + open)
 
     // Click check was done, now checking how far it can expand
     for (let i = 0; i < open.length; i++){
       for (let checky = -1; checky <= 1; checky++){
         for (let checkx = -1; checkx <= 1; checkx++){
-          //Assuming that location is part of the grid
-          if (y + checky > 0 && y + checky < 8 && x + checkx >= 0 && x + checkx < 8){
-            console.log("checking open " + open)
-            // If it's mineless and not touching anything uncover
-            if (grid[y + checky][x + checkx].mine == "o"){
-              grid[y + checky][x + checkx].uncovered = true;
 
-              if (grid[y + checky][x + checkx].near == 0){
-                open.push([y + checky, x + checkx]);
+          //Assuming that location is part of the grid
+          if (open[i][0] + checky >= 0 && open[i][0] < 8 && open[i][1] + checkx >= 0 && open[i][1] + checkx < 8){
+
+            // If it's mineless and not touching anything uncover
+            if (grid[open[i][0] + checky][open[i][1] + checkx].mine == "o"){
+              grid[open[i][0] + checky][open[i][1] + checkx].uncovered = true;
+              grid[open[i][0] + checky][open[i][1] + checkx].colour = [255,255,255];
+
+              if (grid[open[i][0] + checky][open[i][1] + checkx].near == 0){
+                open.push([open[i][0] + checky, open[i][1] + checkx]);
               }
             }
           }
         }
       }
     }
+
+    console.log("done with looping through open spots, open = " + open)
+    //oopsie daisy looks like im pushing thigns to open wrong
   }
 
   // New clicks
@@ -270,7 +273,8 @@ function mouseClicked(){
 
   clicky++
   lose = 0;
-  console.log('hi')
+  console.log('done click')
+  console.log(" ")
 }
 
 // Helper function for first mine generated
