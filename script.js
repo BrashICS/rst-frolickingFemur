@@ -24,6 +24,7 @@ class Square {
   near = 0;
   mine = "o";
   flag = "o";
+  uncovered = false
 
   constructor(colour, near, mine, flag) {
     this.colour = colour;
@@ -41,7 +42,7 @@ function setup() {
   for (let y = 0; y < ROWS; y++) {
     grid[y] = [];
     for (let x = 0; x < COLS; x++) {
-      grid[y].push(new Square([0, 0, 0], 0, "o", 0,));
+      grid[y].push(new Square([0,0,0],0,"o","o",false,));
     }
   }
 }
@@ -76,6 +77,7 @@ function draw_grid(x, y) {
       fill(...grid[row][col].colour);
       rect(col*width + x_buffer, row*height + y_buffer, width, height);
 
+      /*
       // Flag
       if (grid[row][col].flag == "F") {
         textAlign(CENTER, CENTER);
@@ -83,6 +85,7 @@ function draw_grid(x, y) {
         text(grid[row][col].mine, (col*width + x_buffer)+width/2, (row*height + y_buffer)+width/2);
       }
 
+      */
       //--------------------------------------------------------------------
       // Troubleshooting, get rid of later
       // Write the mines of the square in the center of it
@@ -115,14 +118,21 @@ let done = true;
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
   let y = Math.floor((mouseY/100)/0.5);
+  //it's not registering right clicks?????
 
+  console.log(mouseButton, clicky)
 
+  // Flagging on right click
+  if (mouseButton == RIGHT){
+    console.log('jfidsjafpdaf')
+  }
 
   // First click, generating grid with mines and math
-  if (mouseButton == LEFT && clicky == 1 && flag == false){
+  if (mouseButton == LEFT && clicky == 1){
 
     // Highlight first click
     grid[y][x].colour = [255,255,255]
+    grid[y][x].uncovered = true;
 
     // Mines
     for (let m = 0; m < 7; m++){
@@ -178,19 +188,14 @@ function mouseClicked(){
       }
     }
 
-
     //Open up first chunk/find algorithm for that, put it outside, and call on every click
 
   }
 
   clicky++
+  console.log('hi')
 
-  // Flagging
-  if (mouseButton == RIGHT && flag == "o"){
-    grid[y][x].flag = "F";
-    console.log('flag changed at pot')
-  }
-  else if (mouseButton == RIGHT && flag == "F") grid[y][x].flag = "o"
+
 }
 
 // Helper function for first mine generated
@@ -207,11 +212,8 @@ function newMine(y,x){
     }
   }
 
-  // Base casem if it's
-  if (done){
-    return yx;
-  }
-
+  // Base case
+  if (done) return yx;
   newMine(y,x)
 }
 
@@ -228,3 +230,4 @@ function restart(){
 // working on displaying the flagging ish maybe push to later
 // need kill when mine is left clicked (future clicks)
 // algorithm to open up that can be called upon for all #s of left clicks
+// check how to win (when uncovered squares are all mine == o)

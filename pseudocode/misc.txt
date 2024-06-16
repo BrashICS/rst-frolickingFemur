@@ -66,3 +66,13 @@ line 73 ish
               grid[runy][runx].near += 1
 
 runy + checky != runy &&  runx + checkx != runx
+
+
+if (mouseButton == RIGHT && grid[y][x].flag == "o"){
+    grid[y][x].flag = "F";
+    console.log('flag changed at spot')
+  }
+  else if (mouseButton == RIGHT && grid[y][x].flag == "F"){
+    grid[y][x].flag = "o";
+    console.log('flag fjdksf at spot')
+  }
