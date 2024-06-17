@@ -20,7 +20,19 @@ let grid = [];
 document.getElementById("rest").addEventListener("click", restart)
 document.getElementById("win").hidden = true;
 document.getElementById("lose").hidden = true;
+document.getElementById("zeroTime").hidden = false
+document.getElementById("clock").hidden = true
 
+let clicky = 1;
+let yx;
+let checkin = [];
+let done = true;
+let lose = 0;
+let available = new Array()
+let already = false;
+let timesec = 0
+let timemin = 0
+let clock;
 
 class Square {
   colour = [0, 0, 0];
@@ -39,6 +51,7 @@ class Square {
 
 // Setup the scene (runs first)
 function setup() {
+
   cvs = createCanvas(CVS_WIDTH, CVS_HEIGHT);
 
   // Initialize the grid to all black squares
@@ -113,13 +126,7 @@ function draw_grid(x, y) {
   }
 }
 
-let clicky = 1;
-let yx;
-let checkin = [];
-let done = true;
-let lose = 0;
-let available = new Array()
-let already = false;
+
 
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
@@ -128,6 +135,13 @@ function mouseClicked(){
 
   // First click, generating grid with mines and math
   if (mouseButton == LEFT && clicky == 1){
+    document.getElementById("zeroTime").hidden = true
+    document.getElementById("clock").hidden = false
+
+
+    // Clock, counts up every second
+    clock = setInterval(countUp, 1000)
+
     // Highlight first click
     grid[y][x].colour = [255,255,255]
     grid[y][x].uncovered = true;
@@ -200,7 +214,6 @@ function mouseClicked(){
 
     console.log("Just finished first openings so here's available = " + available)
 
-
     //something wrong with my checking for repeats in available
     // Click check was done, now checking how far it can expand
 
@@ -211,12 +224,15 @@ function mouseClicked(){
           //Assuming that around open location is part of the grid
           if (available[i][0] + checky >= 0 && available[i][0]+ checky < 8 && available[i][1] + checkx >= 0 && available[i][1] + checkx < 8){
 
+            //something here???
+            //availcheck isnt actually used in this loop lmao what am i doing
             // Loop through availables to assure no repeats
             for (let availCheck = 0; availCheck < available.length; availCheck++){
-              if(available[i][0] + checky == available[i][0] && available[i][1] + checkx == available[i][1]){
+              if(available[availCheck][0] + checky == available[i][0] && available[availCheck][1] + checkx == available[availCheck][1]){
                already = true
               }
             }
+
 
             // If it's mineless and not stored before then uncover
             if (grid[available[i][0] + checky][available[i][1] + checkx].mine != "m" && already == false){
@@ -246,6 +262,9 @@ function mouseClicked(){
       clicky = undefined;
 
       //Stop the clock
+      timesec = 0;
+      timemin = 0;
+      clearTimeout(clock)
     }
 
 
@@ -265,8 +284,11 @@ function mouseClicked(){
 
       // Can no longer alter the grid
       clicky = undefined
-      // Stop the timer also
 
+      // Stop the timer also
+      timesec = 0;
+      timemin = 0;
+      clearTimeout(clock)
 
     }
 
@@ -279,6 +301,7 @@ function mouseClicked(){
 
   clicky++
   lose = 0;
+  console.log("recent click coords = " + y,x)
   console.log('done click')
   console.log(" ")
 }
@@ -310,11 +333,21 @@ function restart(){
   done = true;
   lose = 0;
   already = false;
+  timesec = 0;
+  timemin = 0;
+  clearTimeout(clock)
   setup()
 }
 
-//SUNDAY - WORKING FUNCTIONAL GAME
-//MONDAY TIMER AND TIMER RESTARTS
+function countUp(){
+  if (timesec == 59){
+    timesec = 0;
+    timemin++
+  }
+  else timesec++
+
+  document.getElementById("clock").innerText = "Timer " + timemin + ":"  + timesec
+}
 
 
 // working on displaying the flagging ish maybe push to later
@@ -323,4 +356,4 @@ function restart(){
 // check how to win (when uncovered squares are all mine == o)
 //problems with rightclick never registering
 
-//remember to stop clock when lost/won
+//try making things private
