@@ -118,7 +118,8 @@ let yx;
 let checkin = [];
 let done = true;
 let lose = 0;
-let open = new Array()
+let available = new Array()
+let already = false;
 
 function mouseClicked(){
   let x = Math.floor((mouseX/100)/0.5);
@@ -190,46 +191,47 @@ function mouseClicked(){
       for (let checkx = -1; checkx <= 1; checkx++){
         //Assuming that location is part of the grid
         if (y + checky >= 0 && y + checky < 8 && x + checkx >= 0 && x + checkx < 8){
-          // If it's mineless and not touching anything uncover
-          if (grid[y + checky][x + checkx].mine == "o"){
-            grid[y + checky][x + checkx].uncovered = true;
-            grid[y + checky][x + checkx].colour = [255,255,255];
-
-            if (grid[y + checky][x + checkx].near == 0){
-              open.push([y + checky, x + checkx]);
-            }
-          }
+          grid[y + checky][x + checkx].uncovered = true;
+          grid[y + checky][x + checkx].colour = [255,255,255];
+          if (y + checky != y && x + checkx != x) available.push([y + checky, x + checkx]);
         }
       }
     }
 
+    console.log("Just finished first openings so here's available = " + available)
+
+
+    //something wrong with my checking for repeats in available
     // Click check was done, now checking how far it can expand
-    for (let i = 0; i < open.length; i++){
-      for (let checky = -1; checky <= 1; checky++){
-        for (let checkx = -1; checkx <= 1; checkx++){
+
+    for (let checky = -1; checky <= 1; checky++){
+      for (let checkx = -1; checkx <= 1; checkx++){
+        for (let i = 0; i < available.length; i++){
 
           //Assuming that around open location is part of the grid
-          if (open[i][0] + checky >= 0 && open[i][0] < 8 && open[i][1] + checkx >= 0 && open[i][1] + checkx < 8){
+          if (available[i][0] + checky >= 0 && available[i][0]+ checky < 8 && available[i][1] + checkx >= 0 && available[i][1] + checkx < 8){
 
-            // If it's mineless and not touching anything uncover
-            if (grid[open[i][0] + checky][open[i][1] + checkx].mine != "m"){
-              grid[open[i][0] + checky][open[i][1] + checkx].uncovered = true;
-              grid[open[i][0] + checky][open[i][1] + checkx].colour = [255,255,255];
-
-              if (grid[open[i][0] + checky][open[i][1] + checkx].near == 0){
-                open.push([open[i][0] + checky, open[i][1] + checkx]);
+            // Loop through availables to assure no repeats
+            for (let availCheck = 0; availCheck < available.length; availCheck++){
+              if(available[i][0] + checky == available[i][0] && available[i][1] + checkx == available[i][1]){
+               already = true
               }
             }
 
+            // If it's mineless and not stored before then uncover
+            if (grid[available[i][0] + checky][available[i][1] + checkx].mine != "m" && already == false){
+
+              grid[available[i][0] + checky][available[i][1] + checkx].uncovered = true;
+              grid[available[i][0] + checky][available[i][1] + checkx].colour = [255,255,255];
+
+              if (grid[available[i][0] + checky][available[i][1] + checkx].near == 0){
+                available.push([available[i][0] + checky, available[i][1] + checkx]);
+              }
+            }
           }
-
-
         }
       }
     }
-
-    console.log("done with looping through open spots, open = " + open)
-    //oopsie daisy looks like im pushing thigns to open wrong
   }
 
   // New clicks
@@ -276,7 +278,6 @@ function mouseClicked(){
   }
 
   clicky++
-  console.log(y,x)
   lose = 0;
   console.log('done click')
   console.log(" ")
@@ -308,6 +309,7 @@ function restart(){
   checkin = []
   done = true;
   lose = 0;
+  already = false;
   setup()
 }
 
