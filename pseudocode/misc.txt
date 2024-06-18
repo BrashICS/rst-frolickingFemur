@@ -123,3 +123,12 @@ if (mouseButton == RIGHT && grid[y][x].flag == "o"){
 
 
     grid[open[i][0] + checky][open[i][1] + checkx]
+
+
+//if the available at this spot == around the current check, it's already been used
+            // Loop through availables to assure no repeats
+            for (let availCheck = 0; availCheck < available.length; availCheck++){
+              if(available[availCheck][0] == available[i][0] + checky && available[availCheck][1] == available[availCheck][1] + checkx){
+               already = true
+              }
+            }

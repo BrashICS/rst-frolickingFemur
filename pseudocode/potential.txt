@@ -1,0 +1,50 @@
+ok so this was the potential algorithm where it opens all possible open slots like regular minesweeper
+but for the life of me i could not get this working
+so i figured a functional game that's not as fully realized as a normal minesweeper is better than half finished
+messy algorithm
+
+
+  uncovered = false
+
+  //something wrong with my checking for repeats in available
+    // Click check was done, now checking how far it can expand
+    // Going through list of each open location
+    for (let i = 0; i < available.length; i++){
+
+      // Circle checking around an open location
+      for (let checky = -1; checky <= 1; checky++){
+        for (let checkx = -1; checkx <= 1; checkx++){
+
+
+          //Assuming that around open location is part of the grid
+          if (available[i][0] + checky >= 0 && available[i][0] + checky < 8 && available[i][1] + checkx >= 0 && available[i][1] + checkx < 8){
+
+            //if the available at this checking spot == around the current check, it's already been used
+            // Loop through availables to assure we're not repeating our verifications
+
+            for (let availCheck = 0; availCheck < available.length; availCheck++){
+              if(available[availCheck][0] == available[i][0] + checky && available[availCheck][1] == available[i][1] + checkx){
+                already = true
+              }
+            }
+
+
+            // If it's mineless and not stored before then uncover
+            if (grid[available[i][0] + checky][available[i][1] + checkx].mine != "m" && already == false){
+
+              grid[available[i][0] + checky][available[i][1] + checkx].uncovered = true;
+
+              if (grid[available[i][0] + checky][available[i][1] + checkx].near == 0){
+                available.push([available[i][0] + checky, available[i][1] + checkx]);
+              }
+            }
+          }
+          already = false
+          console.log(available)
+        }
+      }
+    }
+
+
+let already = false;
+  already = false;
